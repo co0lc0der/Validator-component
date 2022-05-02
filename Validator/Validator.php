@@ -1,102 +1,145 @@
 <?php
-
+/**
+ * Class Validator
+ */
 class Validator
 {
-	private $passed = false, $errors = [], $db = null;
+	/**
+	 * @var bool
+	 */
+	private bool $passed = false;
 
-	public function __construct($db = null) {
+	/**
+	 * list of errors
+	 * @var array
+	 */
+	private array $errors = [];
+
+	/**
+	 * @var null|QueryBuilder
+	 */
+	private $db = null;
+
+	/**
+	 * @param null|QueryBuilder $db
+	 */
+	public function __construct($db = null)
+	{
     $this->setDB($db);
 	}
 
-	public function check($source, $items = []) {
-		foreach($items as $item => $rules) {
-			foreach($rules as $rule => $rule_value) {
+	/**
+	 * @param array $source
+	 * @param array $items
+	 * @return Validator
+	 */
+	public function check(array $source, array $items = []): Validator
+	{
+		foreach ($items as $item => $rules) {
+			foreach ($rules as $rule => $rule_value) {
+				$value = $source[$item] ?? '';
 
-				$value = $source[$item];
-
-				if($rule == 'required' && empty($value)) {
+				if ($rule == 'required' && empty($value)) {
 					$this->addError(ucfirst($item) . " is required");
-				} else if(!empty($value)) {
+				} else if (!empty($value)) {
 					switch ($rule) {
 						case 'min':
-							if(strlen($value) < $rule_value) {
+							if (strlen($value) < $rule_value) {
 								$this->addError(ucfirst($item) . " must be a minimum of {$rule_value} characters.");
 							}
-						break;
+							break;
 
 						case 'max':
-							if(strlen($value) > $rule_value) {
+							if (strlen($value) > $rule_value) {
 								$this->addError(ucfirst($item) . " must be a maximum of {$rule_value} characters.");
 							}
-						break;
+							break;
 
 						case 'matches':
-							if($value != $source[$rule_value]) {
+							if ($value != $source[$rule_value]) {
 								$this->addError("{$rule_value} must match {$item}");
 							}
-						break;
+							break;
 
             case 'int':
-							if(!is_numeric($value)) {
+							if (!is_numeric($value)) {
 								$this->addError(ucfirst($item) . " must be a number.");
 							}
-						break;
+							break;
 
             case 'min_value':
-							if((int) $value < $rule_value) {
+							if ((int) $value < $rule_value) {
 								$this->addError(ucfirst($item) . " must be a minimum of {$rule_value}.");
 							}
-						break;
+							break;
 
 						case 'max_value':
-							if((int) $value > $rule_value) {
+							if ((int) $value > $rule_value) {
 								$this->addError(ucfirst($item) . " must be a maximum of {$rule_value}.");
 							}
-						break;
+							break;
 
 						case 'unique':
 							$check = $this->db->get($rule_value, [[$item, '=', $value]]);
-							if($check->count()) {
+							if ($check->count()) {
 								$this->addError(ucfirst($item) . " already exists.");
 							}
-						break;
+							break;
 
 						case 'email':
-							if(!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+							if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 								$this->addError("{$item} is not an email");
 							}
-						break;
+							break;
 
             case 'regex':
 							if (!preg_match($rule_value, $value)) {
 								$this->addError(ucfirst($item) . " is not match");
 							}
-						break;
+							break;
 					}
 				}
 			}
 		}
 
-		if(empty($this->errors)) {
+		if (empty($this->errors)) {
 			$this->passed = true;
 		}
 
 		return $this;
 	}
 
-  public function setDB($db) {
+	/**
+	 * @param $db
+	 * @return void
+	 */
+  public function setDB($db)
+  {
 		$this->db = $db;
 	}
 
-	private function addError($error) {
+	/**
+	 * @param string $error
+	 * @return void
+	 */
+	private function addError(string $error): void
+	{
 		$this->errors[] = $error;
 	}
 
-	public function errors() {
+	/**
+	 * @return array
+	 */
+	public function errors(): array
+	{
 		return $this->errors;
 	}
 
-	public function passed() {
+	/**
+	 * @return bool
+	 */
+	public function passed(): bool
+	{
 		return $this->passed;
 	}
 }

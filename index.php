@@ -58,12 +58,12 @@ if (!empty($_POST)) {
 ?>
 
 <form action="" method="post" enctype="multipart/form-data">
-  <input type="text" name="username" value="<?=$_POST['username']?>"><br>
-  <input type="email" name="email" value="<?=$_POST['email']?>"><br>
-  <input type="password" name="password" value="<?=$_POST['password']?>"><br>
-  <input type="password" name="password_again" value="<?=$_POST['password_again']?>"><br>
-  <input type="number" name="number" value="<?=$_POST['number']?>"><br>
-  <input type="text" name="date" value="<?=$_POST['date']?>" placeholder="YYYY-MM-DD"><br>
-  <input type="checkbox" name="agree" checked> I agree<br>
+  <input type="text" name="username" value="<?= $_POST['username'] ?? ''; ?>"><br>
+  <input type="email" name="email" value="<?= $_POST['email'] ?? ''; ?>"><br>
+  <input type="password" name="password" value="<?= $_POST['password'] ?? ''; ?>"><br>
+  <input type="password" name="password_again" value="<?= $_POST['password_again'] ?? ''; ?>"><br>
+  <input type="number" name="number" value="<?= $_POST['number'] ?? ''; ?>"><br>
+  <input type="text" name="date" value="<?= $_POST['date'] ?? ''; ?>" placeholder="YYYY-MM-DD"><br>
+  <input type="checkbox" name="agree" <?= isset($_POST['agree']) && !empty($_POST['agree']) ? 'checked' : '' ?>> I agree<br>
   <input type="submit" value="Send">
 </form>
