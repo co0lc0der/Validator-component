@@ -18,7 +18,7 @@ This is easy-to-use php component for validate POST or GET data in your project.
 - `email` - check email correct format
 - `regex` - any RegEx checking
 ## How to use
-### 1. Include Validator class and init it. If you use 'unique' rule you have to inlude [QueryBuilder](https://github.com/co0lc0der/QueryBuilder-component) class also (see QueryBuilder README).
+### 1. Include Validator class and init it. If you use `unique` rule you have to include [QueryBuilder](https://github.com/co0lc0der/QueryBuilder-component) class also (see QueryBuilder README).
 ```php
 require __DIR__ . '/Validator/Validator.php';
 $validator = new Validator();
@@ -36,37 +36,37 @@ $validator = new Validator($query);
 ### 2. Use `check()` method with rules you need.
 ```php
 $validator->check($_POST, [
-  'username'  =>  [
-    'required'  =>  true,
-    'min'   =>  2,
-    'max'   =>  15,
-  ],
-  'email' =>  [
-    'required'  =>  true,
-    'email' =>  true,
-    'unique'    =>  'users'
-  ],
-  'password' => [
-    'required'  =>  true,
-    'min'   =>  3
-  ],
-  'password_again' => [
-    'required'  =>  true,
-    'matches'   => 'password'
-  ],
-  'number'  =>  [
-    'required'  =>  true,
-    'max'   =>  5,
-    'min_value'   =>  0,
-    'max_value'   =>  15,
-  ],
-  'date' => [
-    'required'  =>  true,
-    'regex' => "/^[0-9]{4}-[0-1][0-9]-[0-3][0-9]$/" // YYYY-MM-DD
-  ],
-  'agree' => [
-    'required'  =>  true,
-  ]
+	'username'  =>  [
+		'required'  =>  true,
+		'min'   =>  2,
+		'max'   =>  15,
+	],
+	'email' =>  [
+		'required'  =>  true,
+		'email' =>  true,
+		'unique'    =>  'users'
+	],
+	'password' => [
+		'required'  =>  true,
+		'min'   =>  3
+	],
+	'password_again' => [
+		'required'  =>  true,
+		'matches'   => 'password'
+	],
+	'number'  =>  [
+		'required'  =>  true,
+		'max'   =>  5,
+		'min_value'   =>  0,
+		'max_value'   =>  15,
+	],
+	'date' => [
+		'required'  =>  true,
+		'regex' => "/^[0-9]{4}-[0-1][0-9]-[0-3][0-9]$/" // YYYY-MM-DD
+	],
+	'agree' => [
+		'required'  =>  true,
+	]
 ]);
 ```
 form example:
@@ -85,12 +85,12 @@ form example:
 ### 3. Do something if validation is passed or print errors.
 ```php
 if ($validator->passed()) {
-  // do something
+	// do something
 } else {
-  echo '<ul>';
-  foreach ($validator->errors() as $error) {
-    echo "<li>$error</li>";
-  }
-  echo '</ul>';
+	echo '<ul>';
+	foreach ($validator->errors() as $error) {
+		echo "<li>$error</li>";
+	}
+	echo '</ul>';
 }
 ```
