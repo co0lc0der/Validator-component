@@ -80,8 +80,8 @@ class Validator
 							break;
 
 						case 'unique':
-							$check = $this->db->get($rule_value, [[$item, '=', $value]]);
-							if ($check->count()) {
+							$check = $this->db->select($rule_value)->where([[$item, '=', $value]])->one();
+							if ($check->getCount()) {
 								$this->addError(ucfirst($item) . " already exists.");
 							}
 							break;
